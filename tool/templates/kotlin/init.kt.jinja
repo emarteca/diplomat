@@ -313,6 +313,38 @@ class size_t(val value: Long = 0): com.sun.jna.IntegerType(Native.SIZE_T_SIZE, v
     override fun toShort(): Short = value.toShort()
 }
 
+class u_byte(val value: UByte = 0u): com.sun.jna.IntegerType(1, value.toLong(), true)  {
+    override fun toByte(): Byte = value.toByte()
+    override fun toChar(): Char = value.toInt().toChar()
+    override fun toShort(): Short = value.toShort()
+    fun toUByte(): UByte = value.toByte().toUByte()
+    constructor(): this(0u)
+}
+
+class u_short(val value: UShort = 0u): com.sun.jna.IntegerType(2, value.toLong(), true)  {
+    override fun toByte(): Byte = value.toByte()
+    override fun toChar(): Char = value.toInt().toChar()
+    override fun toShort(): Short = value.toShort()
+    fun toUShort(): UShort = value.toShort().toUShort()
+    constructor(): this(0u)
+}
+
+class u_int(val value: UInt = 0u): com.sun.jna.IntegerType(4, value.toLong(), true)  {
+    override fun toByte(): Byte = value.toByte()
+    override fun toChar(): Char = value.toInt().toChar()
+    override fun toShort(): Short = value.toShort()
+    fun toUInt(): UInt = value.toInt().toUInt()
+    constructor(): this(0u)
+}
+
+class u_long(val value: ULong = 0u): com.sun.jna.IntegerType(8, value.toLong(), true)  {
+    override fun toByte(): Byte = value.toByte()
+    override fun toChar(): Char = value.toInt().toChar()
+    override fun toShort(): Short = value.toShort()
+    fun toULong(): ULong = value.toULong()
+    constructor(): this(0u)
+}
+
 class Slice: Structure(), Structure.ByValue {
 
     @JvmField var data: Pointer = Pointer(0)// Pointer to const char

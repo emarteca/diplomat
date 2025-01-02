@@ -40,11 +40,11 @@ impl<'tcx> KotlinFormatter<'tcx> {
 
     pub fn fmt_primitive_to_native_conversion(&self, name: &str, prim: PrimitiveType) -> String {
         match prim {
-            PrimitiveType::Int(IntType::U8) => format!("{name}.toByte()"),
-            PrimitiveType::Int(IntType::U16) => format!("{name}.toShort()"),
-            PrimitiveType::Int(IntType::U32) => format!("{name}.toInt()"),
-            PrimitiveType::Int(IntType::U64) => format!("{name}.toLong()"),
-            PrimitiveType::IntSize(IntSizeType::Usize) => format!("{name}.toLong()"),
+            PrimitiveType::Int(IntType::U8) => format!("u_byte({name})"),
+            PrimitiveType::Int(IntType::U16) => format!("u_short({name})"),
+            PrimitiveType::Int(IntType::U32) => format!("u_int({name})"),
+            PrimitiveType::Int(IntType::U64) => format!("u_long({name})"),
+            PrimitiveType::IntSize(IntSizeType::Usize) => format!("size_t({name})"),
             PrimitiveType::Int128(_) => panic!("128 bit ints not supported"),
             _ => name.into(),
         }
@@ -85,28 +85,28 @@ impl<'tcx> KotlinFormatter<'tcx> {
                 if support_unsigned {
                     "UByte"
                 } else {
-                    "Byte"
+                    "u_byte"
                 }
             }
             PrimitiveType::Int(IntType::U16) => {
                 if support_unsigned {
                     "UShort"
                 } else {
-                    "Short"
+                    "u_short"
                 }
             }
             PrimitiveType::Int(IntType::U32) => {
                 if support_unsigned {
                     "UInt"
                 } else {
-                    "Int"
+                    "u_int"
                 }
             }
             PrimitiveType::Int(IntType::U64) => {
                 if support_unsigned {
                     "ULong"
                 } else {
-                    "Long"
+                    "u_long"
                 }
             }
             PrimitiveType::Byte => "Byte",
@@ -115,7 +115,7 @@ impl<'tcx> KotlinFormatter<'tcx> {
                 if support_unsigned {
                     "ULong"
                 } else {
-                    "Long"
+                    "size_t"
                 }
             }
             PrimitiveType::Float(FloatType::F32) => "Float",
@@ -208,6 +208,11 @@ impl<'tcx> KotlinFormatter<'tcx> {
         match prim {
             PrimitiveType::Float(FloatType::F32) => "0.0F",
             PrimitiveType::Float(FloatType::F64) => "0.0",
+            PrimitiveType::Int(IntType::U8) => "u_byte()",
+            PrimitiveType::Int(IntType::U16) => "u_short()",
+            PrimitiveType::Int(IntType::U32) => "u_int()",
+            PrimitiveType::Int(IntType::U64) => "u_long()",
+            PrimitiveType::IntSize(IntSizeType::Usize) => "size_t()",
             _ => "0",
         }
     }
@@ -370,11 +375,11 @@ impl<'tcx> KotlinFormatter<'tcx> {
     pub fn fmt_primitive_type_native(&self, prim: PrimitiveType) -> &'static str {
         match prim {
             PrimitiveType::Bool => "Byte",
-            PrimitiveType::Int(IntType::U8) => "Byte",
-            PrimitiveType::Int(IntType::U16) => "Short",
-            PrimitiveType::Int(IntType::U32) => "Int",
-            PrimitiveType::Int(IntType::U64) => "Long",
-            PrimitiveType::IntSize(_) => "Long",
+            PrimitiveType::Int(IntType::U8) => "u_byte",
+            PrimitiveType::Int(IntType::U16) => "u_short",
+            PrimitiveType::Int(IntType::U32) => "u_int",
+            PrimitiveType::Int(IntType::U64) => "u_long",
+            PrimitiveType::IntSize(_) => "size_t",
             prim => self.fmt_primitive_as_ffi(prim, false),
         }
     }
